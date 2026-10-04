@@ -1,14 +1,19 @@
 // @ts-check
 import { test, expect } from '@playwright/test';
+import { describe } from 'node:test';
 
 test('verify welcom message', async ({ page }) => {
   await page.goto('https://qaplayground.com/');
   await expect (page.getByRole('heading',{name:'The Only Automation'})).toBeVisible();
 });
 
+test.describe('qaplayground practice', ()=>{
+  test.beforeEach(async({page})=>{
+      await page.goto('https://qaplayground.com/');
+      await page.getByRole('link', { name: 'Practice', exact: true }).click()
+  })
+
 test('practice input fields', async ({ page }) => {
-  await page.goto('https://qaplayground.com/');
-  await page.getByRole('link', { name: 'Practice', exact: true }).click()
   await page.getByTestId('new-practice-card-input-fields').click()
   await page.getByTestId('input-movie-name').fill("Titanic")
   await page.getByTestId('btn-submit-movie').click()
@@ -17,12 +22,9 @@ test('practice input fields', async ({ page }) => {
   await expect(page.getByTestId('result-s03')).toHaveText("Value: The Matrix")
   await page.getByTestId('input-clear').fill("text à retirer")
   await page.getByTestId('btn-clear-field').click()
-  expect(page.getByTestId('result-s04')).toHaveText("Field cleared ✓")
+  await expect(page.getByTestId('result-s04')).toHaveText("Field cleared ✓")
 });
-
 test('Button Automation Practice', async ({ page }) => {
-  await page.goto('https://qaplayground.com/');
-  await page.getByRole('link', { name: 'Practice', exact: true }).click()
   await page.getByTestId('new-practice-card-buttons').click()
   await page.getByTestId('btn-navigate-home').click()
   await expect (page.getByTestId('result-s01')).toContainText("Home")
@@ -32,6 +34,9 @@ test('Button Automation Practice', async ({ page }) => {
   await page.getByTestId('btn-double-click').dblclick()
   await expect (page.getByTestId('result-s07')).toHaveText("Double clicked!")
 });
+})
+
+
 
 
 
