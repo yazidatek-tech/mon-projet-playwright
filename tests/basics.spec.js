@@ -34,7 +34,60 @@ test('Button Automation Practice', async ({ page }) => {
   await page.getByTestId('btn-double-click').dblclick()
   await expect (page.getByTestId('result-s07')).toHaveText("Double clicked!")
 });
+
+test('forms Automation Practice', async ({ page }) => {
+  await page.getByTestId('new-practice-card-forms').click()
+  await page.getByTestId('input-login-email').fill('formsemail@gmail.com')
+  await page.getByTestId('form-login-inner').getByRole('textbox', { name: 'Password' }).fill('12345678')
+  await page.getByTestId('btn-login-submit').click()
+  await expect (page.getByTestId("result-login")).toContainText("Login successful! Welcome")
+  //F02
+  await page.getByTestId('input-first-name').fill('yazid')
+  await page.getByTestId('input-last-name').fill('atek')
+  const first=page.getByTestId('input-first-name')
+  const last=page.getByTestId('input-last-name')
+  await expect(first).toHaveValue('yazid')
+  await expect(last).toHaveValue('atek')
+  await page.getByTestId('input-phone').fill('0751054905')
+  await expect(page.getByTestId('input-phone')).toHaveValue(/^0\d{9}$/);
+  await page.getByTestId('input-dob').pressSequentially('24051990')
+  await expect(page.getByTestId('input-dob')).toHaveValue('1990-05-24')
+  await page.getByTestId('radio-gender-male').check()
+  await expect(page.getByTestId('radio-gender-male')).toBeChecked
+  await page.getByTestId('btn-personal-submit').click()
+  //F03
+  await page.getByTestId('select-country').selectOption({label:"India"})
+  await page.getByTestId('input-city').fill('buston')
+  await page.getByRole('textbox', { name: 'About You optional · no testid' }).fill("étudiant en master stds")
+  const about_me=page.getByRole('textbox', { name: 'About You optional · no testid' })
+  const city=page.getByTestId('input-city')
+  const country=page.getByTestId('select-country')
+  await expect(about_me).toHaveValue("étudiant en master stds")
+  await expect(country.locator('option:checked')).toHaveText('India')
+  await expect(city).toHaveValue("buston")
+  //F04
+  const selenium=page.getByTestId('checkbox-group-interests').getByText('Selenium')
+  const playwright=page.getByTestId('checkbox-group-interests').getByText('Playwright')
+  await selenium.check()
+  await playwright.check()
+  await expect(selenium).toBeChecked()
+  await expect(playwright).toBeChecked()
+  await page.getByTestId('btn-interests-submit').click()
+  //challenge
+  const champ=page.getByTestId('input-password')
+  await champ.fill("123456")
+  await expect(champ).toHaveValue(/^.{6,}$/)
+  await page.getByTestId('input-confirm-password').fill("123456")
+  await expect(page.getByTestId('input-confirm-password')).toHaveValue("123456")
+  await page.getByTestId('checkbox-terms').check()
+  await expect(page.getByTestId('checkbox-terms')).toBeChecked
+  await page.getByTestId('submit-form-btn').click
+  
+
+});
+
 })
+
 
 
 
