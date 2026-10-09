@@ -83,7 +83,34 @@ test('forms Automation Practice', async ({ page }) => {
   await expect(page.getByTestId('checkbox-terms')).toBeChecked
   await page.getByTestId('submit-form-btn').click
   
+});
+test('dropdown Automation Practice', async ({ page }) => {
+  //F01
+  await page.getByTestId('new-practice-card-dropdowns').click()
+  await page.getByTestId('fruit-select').selectOption({label:"Apple"})
+  await expect(page.getByTestId('result-s01')).toHaveText("Selected fruit: Apple")
+  //F02
+  await page.getByTestId('country-select').selectOption({value:"argentina"})
+  await expect(page.getByTestId('country-select')).toHaveValue("argentina")
+  //F03
+  const liste = page.getByTestId('language-select')
+  const libelles = await liste.locator('option').allTextContents()
+  console.log(libelles)                       // [ 'Python', 'Java', 'JavaScript', 'TypeScript' ]
+  const dernierIndex = libelles.length - 1
+  console.log(dernierIndex)                   // 3
+  await liste.selectOption({ index: dernierIndex })
+  await page.getByRole('button', { name: 'Select last programming' }).click()
+  await expect(page.getByTestId('language-select')).toHaveValue("typescript")
+  //F04
+  await page.getByTestId("hero-select").selectOption({value:"batman"})
+  await expect(page.getByTestId("result-s04")).toHaveText("Selected heroes: Batman")
+  //F05
+  const city = page.getByRole('combobox', { name: 'City' })
 
+  await city.fill('Pune')
+  await page.getByRole('option', { name: 'Pune' }).click()
+  await expect(page.getByTestId('result-s06')).toHaveText('City selected: Pune (city-pune)')
+  
 });
 
 })
